@@ -30,6 +30,10 @@ print('[3] Fabricated Content\t:', df[df.label == 3].shape[0])
 print('[4] False Connection\t:', df[df.label == 4].shape[0])
 
 
+X = df['Judul']
+y = df['label']
+
+
 from sklearn.feature_extraction.text import CountVectorizer
 count_vect = CountVectorizer()
 x_train_tf = count_vect.fit_transform(df.Judul)
