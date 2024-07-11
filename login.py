@@ -3,6 +3,7 @@ from PySide6.QtWidgets import (QApplication, QWidget, QLabel, QLineEdit, QPushBu
 from PySide6.QtCore import Qt
 import mysql.connector
 from mysql.connector import Error
+from naive_bayes import NaiveBayesWindow
 
 class LoginWindow(QWidget):
     def __init__(self):
@@ -59,6 +60,7 @@ class LoginWindow(QWidget):
                     user, role = record
                     if role == 1:
                         QMessageBox.information(self, "Login Successful", f"Welcome, admin {username}!")
+                        self.openNaiveBayesWindow()
                     elif role == 2:
                         QMessageBox.information(self, "Login Successful", f"Welcome, kepala bidang {username}!")
                     else:
@@ -71,6 +73,11 @@ class LoginWindow(QWidget):
             if connection.is_connected():
                 cursor.close()
                 connection.close()
+
+    def openNaiveBayesWindow(self):
+        self.naiveBayesWindow = NaiveBayesWindow()
+        self.naiveBayesWindow.show()
+        self.close()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
