@@ -2,7 +2,7 @@ import sys
 from PySide6.QtWidgets import (QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QComboBox, QGroupBox, QMessageBox)
 from PySide6.QtCore import Qt
 
-class InputForm(QWidget):
+class NaiveBayesWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -87,5 +87,5 @@ class InputForm(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    form = InputForm()
+    form = NaiveBayesWindow()
     sys.exit(app.exec())
