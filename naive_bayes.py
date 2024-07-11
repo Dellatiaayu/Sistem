@@ -42,7 +42,6 @@ class InputForm(QWidget):
         testGroupBox = QGroupBox("Testing")
         testLayout = QVBoxLayout()
         testLayout.setAlignment(Qt.AlignTop)  # Align the layout to the top
-        testLayout.setStyleSheet("font-size: 16px; font-weight: bold;")
         
         self.testTitleLabel = QLabel("Judul Berita Hoaks:")
         self.testTitleInput = QLineEdit()
