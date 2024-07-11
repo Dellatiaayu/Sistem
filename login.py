@@ -49,7 +49,7 @@ class LoginWindow(QWidget):
                 host='localhost',
                 database='klasifikasi_nb',
                 user='root', 
-                password='root' 
+                password='' 
             )
             if connection.is_connected():
                 cursor = connection.cursor()

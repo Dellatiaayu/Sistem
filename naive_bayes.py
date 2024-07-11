@@ -23,9 +23,6 @@ class InputForm(QWidget):
             "Imposter Content", 
             "Fabricated Content", 
             "False Connection", 
-            "False Context", 
-            "Manipulated Content", 
-            "Satire or Parody"
         ])
         
         self.trainSubmitButton = QPushButton("Submit Training Data")
@@ -50,6 +47,7 @@ class InputForm(QWidget):
         # Create widgets for testing section
         testGroupBox = QGroupBox("Testing")
         testLayout = QVBoxLayout()
+        testLayout.setAlignment(Qt.AlignTop)  # Align the layout to the top
         
         self.testTitleLabel = QLabel("Judul Berita Hoaks:")
         self.testTitleInput = QLineEdit()
