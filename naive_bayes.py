@@ -9,13 +9,10 @@ class InputForm(QWidget):
 
     def initUI(self):
         # Create widgets for training section
-        trainGroupBox = QGroupBox()
+        trainGroupBox = QGroupBox("Training")
         trainLayout = QVBoxLayout()
+        trainLayout.setAlignment(Qt.AlignTop)  # Align the layout to the top
         
-        trainTitle = QLabel("Training", self)
-        trainTitle.setAlignment(Qt.AlignCenter)
-        trainTitle.setStyleSheet("font-size: 16px; font-weight: bold;")
-
         self.trainTitleLabel = QLabel("Judul Berita Hoaks:")
         self.trainTitleInput = QLineEdit()
         
@@ -34,7 +31,6 @@ class InputForm(QWidget):
         self.trainSubmitButton = QPushButton("Submit Training Data")
         self.trainSubmitButton.clicked.connect(self.showTrainData)
 
-        trainLayout.addWidget(trainTitle)
         trainLayout.addWidget(self.trainTitleLabel)
         trainLayout.addWidget(self.trainTitleInput)
         trainLayout.addWidget(self.trainCategoryLabel)
@@ -43,20 +39,17 @@ class InputForm(QWidget):
         trainGroupBox.setLayout(trainLayout)
 
         # Create widgets for testing section
-        testGroupBox = QGroupBox()
+        testGroupBox = QGroupBox("Testing")
         testLayout = QVBoxLayout()
+        testLayout.setAlignment(Qt.AlignTop)  # Align the layout to the top
+        testLayout.setStyleSheet("font-size: 16px; font-weight: bold;")
         
-        testTitle = QLabel("Testing", self)
-        testTitle.setAlignment(Qt.AlignCenter)
-        testTitle.setStyleSheet("font-size: 16px; font-weight: bold;")
-
         self.testTitleLabel = QLabel("Judul Berita Hoaks:")
         self.testTitleInput = QLineEdit()
         
         self.testSubmitButton = QPushButton("Submit Testing Data")
         self.testSubmitButton.clicked.connect(self.showTestData)
 
-        testLayout.addWidget(testTitle)
         testLayout.addWidget(self.testTitleLabel)
         testLayout.addWidget(self.testTitleInput)
         testLayout.addWidget(self.testSubmitButton)
