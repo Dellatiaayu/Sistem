@@ -30,12 +30,21 @@ class InputForm(QWidget):
         
         self.trainSubmitButton = QPushButton("Submit Training Data")
         self.trainSubmitButton.clicked.connect(self.showTrainData)
+        
+        self.addToDBSubmitButton = QPushButton("Add to Database")
+        self.addToDBSubmitButton.clicked.connect(self.addToDB)
+
+        buttonLayout = QHBoxLayout()
+        buttonLayout.addWidget(self.trainSubmitButton)
+        buttonLayout.addWidget(self.addToDBSubmitButton)
 
         trainLayout.addWidget(self.trainTitleLabel)
         trainLayout.addWidget(self.trainTitleInput)
         trainLayout.addWidget(self.trainCategoryLabel)
         trainLayout.addWidget(self.trainCategoryDropdown)
+        trainLayout.addWidget(self.addToDBSubmitButton)        
         trainLayout.addWidget(self.trainSubmitButton)
+        trainLayout.addLayout(buttonLayout)
         trainGroupBox.setLayout(trainLayout)
 
         # Create widgets for testing section
@@ -70,6 +79,9 @@ class InputForm(QWidget):
         title = self.trainTitleInput.text()
         category = self.trainCategoryDropdown.currentText()
         QMessageBox.information(self, "Training Data", f"Judul: {title}\nKategori: {category}")
+        
+    def addToDB(self):
+        QMessageBox.information(self, "Add to Database", "Data has been added to the database.")
 
     def showTestData(self):
         title = self.testTitleInput.text()
