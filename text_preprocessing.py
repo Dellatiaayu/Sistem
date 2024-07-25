@@ -9,7 +9,7 @@ from nltk.corpus import stopwords
 import sqlalchemy
 from sqlalchemy import create_engine
 
-engine = create_engine('mysql+pymysql://root:@localhost/klasifikasi_nb')
+engine = create_engine('mysql+pymysql://root:root@localhost/klasifikasi_nb')
 
 query = "SELECT * FROM training"
 df = pd.read_sql(query, engine)
