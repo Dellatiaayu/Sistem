@@ -25,11 +25,8 @@ class NaiveBayesWindow(QWidget):
             "False Connection", 
         ])
         
-        self.trainSubmitButton = QPushButton("Submit Data Training")
+        self.trainSubmitButton = QPushButton("Proses Training")
         self.trainSubmitButton.clicked.connect(self.showTrainData)
-        
-        self.addToDBSubmitButton = QPushButton("Proses Training")
-        self.addToDBSubmitButton.clicked.connect(self.addToDB)
 
         buttonLayout = QHBoxLayout()
         buttonLayout.addWidget(self.trainSubmitButton)
