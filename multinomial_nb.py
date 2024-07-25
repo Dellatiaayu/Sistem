@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, T
 connection = pymysql.connect(
     host='localhost',
     user='root',
-    password='root',
+    password='',
     database='klasifikasi_nb',
     charset='utf8mb4',
     cursorclass=pymysql.cursors.DictCursor
