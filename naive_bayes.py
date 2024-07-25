@@ -25,10 +25,10 @@ class NaiveBayesWindow(QWidget):
             "False Connection", 
         ])
         
-        self.trainSubmitButton = QPushButton("Submit Training Data")
+        self.trainSubmitButton = QPushButton("Submit Data Training")
         self.trainSubmitButton.clicked.connect(self.showTrainData)
         
-        self.addToDBSubmitButton = QPushButton("Add to Database")
+        self.addToDBSubmitButton = QPushButton("Proses Training")
         self.addToDBSubmitButton.clicked.connect(self.addToDB)
 
         buttonLayout = QHBoxLayout()
@@ -52,7 +52,7 @@ class NaiveBayesWindow(QWidget):
         self.testTitleLabel = QLabel("Judul Berita Hoaks:")
         self.testTitleInput = QLineEdit()
         
-        self.testSubmitButton = QPushButton("Submit Testing Data")
+        self.testSubmitButton = QPushButton("Proses Testing")
         self.testSubmitButton.clicked.connect(self.showTestData)
 
         testLayout.addWidget(self.testTitleLabel)

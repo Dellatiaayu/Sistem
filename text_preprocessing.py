@@ -20,12 +20,19 @@ def clean_text(Judul):
     # Memisahkan dan menggabungkan kata
     Judul = ' '.join(Judul.split())
     return Judul
+# Menampilkan hasil proses cleanning
+data['Judul'] = data['Judul'].apply(clean_text)
+data.head(50)
+
 
 # Proses Case Folding
 def case_folding(Judul):
     # Mengubah Menjadi Huruf Kecil
     Judul = Judul.lower()
     return Judul
+# Menampilkan hasil proses case folding
+data['Judul'] = data['Judul'].apply(case_folding)
+data.head(50)
 
 # Proses Tokenizing
 
@@ -33,6 +40,8 @@ def case_folding(Judul):
 from nltk.tokenize import RegexpTokenizer
 regexp = RegexpTokenizer(r'\w+|$[0-9]+|\S+')
 data['Judul'] = data['Judul'].apply(regexp.tokenize)
+# Menampilkan hasil proses tokenizing
+data.head(50)
 
 # Proses Filtering
 
@@ -54,6 +63,9 @@ def stopword_removal(Judul):
         data.append(x)
     return data
 data['Judul'] = data['Judul'].apply(stopword_removal)
+# Menampilkan hasil proses filtering
+data.head(50)
+
 
 # Proses Stemming
 
