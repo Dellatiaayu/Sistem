@@ -30,13 +30,11 @@ class NaiveBayesWindow(QWidget):
 
         buttonLayout = QHBoxLayout()
         buttonLayout.addWidget(self.trainSubmitButton)
-        buttonLayout.addWidget(self.addToDBSubmitButton)
 
         trainLayout.addWidget(self.trainTitleLabel)
         trainLayout.addWidget(self.trainTitleInput)
         trainLayout.addWidget(self.trainCategoryLabel)
-        trainLayout.addWidget(self.trainCategoryDropdown)
-        trainLayout.addWidget(self.addToDBSubmitButton)        
+        trainLayout.addWidget(self.trainCategoryDropdown)      
         trainLayout.addWidget(self.trainSubmitButton)
         trainLayout.addLayout(buttonLayout)
         trainGroupBox.setLayout(trainLayout)
