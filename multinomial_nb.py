@@ -4,77 +4,39 @@ import numpy as np
 import string
 import re
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, TfidfVectorizer
+import sqlalchemy
+from sqlalchemy import create_engine
 
-
-connection = pymysql.connect(
-    host='localhost',
-    user='root',
-    password='',
-    database='klasifikasi_nb',
-    charset='utf8mb4',
-    cursorclass=pymysql.cursors.DictCursor
-)
+engine = create_engine('mysql+pymysql://root:root@localhost/klasifikasi_nb')
 
 query_training = "SELECT * FROM training"
 query_kategori = "SELECT * FROM kategori"
 
-df_training = pd.read_sql(query_training, connection)
-df_kategori = pd.read_sql(query_kategori, connection)
-
-# Menggabungkan tabel training dan kategori
-df = pd.merge(df_training, df_kategori, left_on='id_kategori', right_on='id', how='left', suffixes=('', '_kategori'))
-
-# Menghapus kolom
-df.drop(columns=['id_kategori', 'id_kategori_kategori'], inplace=True)
-
+df_training = pd.read_sql(query_training, engine)
+df_kategori = pd.read_sql(query_kategori, engine)
 
 # Menampilkan beberapa baris data
-df.head(50)
+print(df_training.head(5))
+print(df_kategori['id'])
 
-# def polaritas(teks):
-#     if teks =='Imposter Content':
-#         return 1
-#     elif teks =='Misleading Content':
-#         return 2
-#     elif teks =='Fabricated Content':
-#         return 3
-#     else:
-#         return 4
+count_vect = CountVectorizer()
+x_train_tf = count_vect.fit_transform(df_training.Judul)
+print(x_train_tf)
+x_train_tf.shape
 
-    
-# df['label'] = df['Kategori'].apply(polaritas)
-# df
+tfidf_transformer = TfidfTransformer()
+x_train_tfidf = tfidf_transformer.fit_transform(x_train_tf)
+x_train_tfidf.shape
+
+tfidf = TfidfVectorizer()
 
 
-# X = df['Judul']
-# y = df['label']
+x_tfidf = tfidf.fit_transform(df_training.Judul).toarray()
+print(x_tfidf)
 
 
-# from sklearn.feature_extraction.text import CountVectorizer
-# count_vect = CountVectorizer()
-# x_train_tf = count_vect.fit_transform(df.Judul)
-# print(x_train_tf)
-# x_train_tf.shape
-
-
-# from sklearn.feature_extraction.text import TfidfTransformer
-
-# tfidf_transformer = TfidfTransformer()
-# x_train_tfidf = tfidf_transformer.fit_transform(x_train_tf)
-# x_train_tfidf.shape
-
-
-# from sklearn.feature_extraction.text import TfidfVectorizer
-
-# tfidf = TfidfVectorizer()
-
-
-# x_tfidf = tfidf.fit_transform(X).toarray()
-# x_tfidf
-
-
-# data_tfidf = pd.DataFrame(x_tfidf, columns=tfidf.get_feature_names_out())
-# data_tfidf
+data_tfidf = pd.DataFrame(x_tfidf, columns=tfidf.get_feature_names_out())
+print(data_tfidf)
 
 
 # import pandas as pd
