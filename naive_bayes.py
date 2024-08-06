@@ -15,7 +15,6 @@ class NaiveBayesWindow(QWidget):
         self.initUI()
 
     def initUI(self):
-        
         engine = create_engine('mysql+pymysql://root:@localhost/klasifikasi_nb')
         # Create widgets for training section
         trainGroupBox = QGroupBox("Training")
@@ -47,7 +46,7 @@ class NaiveBayesWindow(QWidget):
         trainLayout.addWidget(self.trainSubmitButton)
         trainLayout.addLayout(buttonLayout)
         trainGroupBox.setLayout(trainLayout)
-
+        
         # Create widgets for testing section
         testGroupBox = QGroupBox("Testing")
         testLayout = QVBoxLayout()
@@ -56,12 +55,27 @@ class NaiveBayesWindow(QWidget):
         self.testTitleLabel = QLabel("Judul Berita Hoaks:")
         self.testTitleInput = QLineEdit()
         
+        self.testCategoryLabel = QLabel("Kategori Hoaks:")
+        self.testCategoryDropdown = QComboBox()
+        
+        # get kategori from database
+        kategories = "SELECT * FROM kategori";
+        kategori = pd.read_sql(kategories, engine)
+        kategori = kategori['name'].tolist()
+        self.testCategoryDropdown.addItems(kategori)
+        
         self.testSubmitButton = QPushButton("Proses Testing")
         self.testSubmitButton.clicked.connect(self.showTestData)
+        
+        buttonLayout = QHBoxLayout()
+        buttonLayout.addWidget(self.testSubmitButton)
 
         testLayout.addWidget(self.testTitleLabel)
         testLayout.addWidget(self.testTitleInput)
+        testLayout.addWidget(self.testCategoryLabel)
+        testLayout.addWidget(self.testCategoryDropdown)
         testLayout.addWidget(self.testSubmitButton)
+        testLayout.addLayout(buttonLayout)
         testGroupBox.setLayout(testLayout)
 
         # Create main layout and add both group boxes
@@ -109,8 +123,32 @@ class NaiveBayesWindow(QWidget):
         QMessageBox.information(self, "Add to Database", "Data has been added to the database.")
 
     def showTestData(self):
+        engine = create_engine('mysql+pymysql://root:root@localhost/klasifikasi_nb')
+        
         title = self.testTitleInput.text()
-        QMessageBox.information(self, "Testing Data", f"Judul: {title}")
+        category = self.testCategoryDropdown.currentText()
+        
+        # get category id from database
+        query = f"SELECT id FROM kategori WHERE name = '{category}'"
+        category_id = pd.read_sql(query, engine)
+        category_id = category_id['id'].values[0]
+        
+        # if title is empty
+        if not title:
+            QMessageBox.warning(self, "Warning", "Judul tidak boleh kosong.")
+            return
+        
+        query = text("INSERT INTO testing (Judul, id_kategori) VALUES (:judul, :id_kategori)")
+        with engine.connect() as connection:
+            result = connection.execute(query, {"judul": title, "id_kategori": category_id})
+            inserted_id = result.lastrowid
+            connection.commit()
+            connection.close()
+        
+        # get result from testing data
+        os.system('python multinomial_testing.py ' + str(inserted_id))
+        
+        QMessageBox.information(self, "Berhasil Testing Data", f"Judul: {title}")
         
 
 if __name__ == "__main__":
