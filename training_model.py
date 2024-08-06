@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, TfidfVectorizer
 from sqlalchemy import create_engine
-engine = create_engine('mysql+pymysql://root:root@localhost/klasifikasi_nb')
+engine = create_engine('mysql+pymysql://root:@localhost/klasifikasi_nb')
 
 query_training = "SELECT * FROM training"
 query_kategori = "SELECT * FROM kategori"

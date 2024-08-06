@@ -16,7 +16,7 @@ class NaiveBayesWindow(QWidget):
 
     def initUI(self):
         
-        engine = create_engine('mysql+pymysql://root:root@localhost/klasifikasi_nb')
+        engine = create_engine('mysql+pymysql://root:@localhost/klasifikasi_nb')
         # Create widgets for training section
         trainGroupBox = QGroupBox("Training")
         trainLayout = QVBoxLayout()
@@ -78,7 +78,7 @@ class NaiveBayesWindow(QWidget):
         self.show()
 
     def showTrainData(self):
-        engine = create_engine('mysql+pymysql://root:root@localhost/klasifikasi_nb')
+        engine = create_engine('mysql+pymysql://root:@localhost/klasifikasi_nb')
         
         title = self.trainTitleInput.text()
         category = self.trainCategoryDropdown.currentText()
