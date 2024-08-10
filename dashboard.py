@@ -1,6 +1,8 @@
 import sys
 from PySide6.QtWidgets import (QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox, QTableWidget, QTableWidgetItem, QHeaderView, QComboBox, QSpacerItem, QSizePolicy)
 from PySide6.QtCore import Qt, QSortFilterProxyModel
+from sqlalchemy import create_engine, text
+import pandas as pd
 
 class ClassificationResultWindow(QWidget):
     def __init__(self):
@@ -9,34 +11,38 @@ class ClassificationResultWindow(QWidget):
 
     def initUI(self):
         # Dummy data for testing
-        self.test_data = [
-            {"judul": "Judul Hoaks 1", "kategori": "Misleading Content", "akurasi": 0.95, "presisi": 0.93, "recall": 0.94, "f1_score": 0.935},
-            {"judul": "Judul Hoaks 2", "kategori": "Fabricated Content", "akurasi": 0.92, "presisi": 0.90, "recall": 0.91, "f1_score": 0.905},
-            # Add more test data as needed
-        ]
+        engine = create_engine('mysql+pymysql://root:@localhost/klasifikasi_nb')
 
-        self.tableWidget = QTableWidget()
-        self.tableWidget.setRowCount(len(self.test_data))
-        self.tableWidget.setColumnCount(8)
-        self.tableWidget.setHorizontalHeaderLabels(["Judul", "Kategori Hoaks", "Akurasi", "Presisi", "Recall", "F1-Score", "ACC", "Edit ACC"])
-        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        query = """
+        SELECT t.*, k.name 
+        FROM testing t
+        JOIN kategori k ON t.id_kategori = k.id
+        """
+        test_data = pd.read_sql(query, engine)
 
-        for row, data in enumerate(self.test_data):
-            self.tableWidget.setItem(row, 0, QTableWidgetItem(data["judul"]))
-            self.tableWidget.setItem(row, 1, QTableWidgetItem(data["kategori"]))
-            self.tableWidget.setItem(row, 2, QTableWidgetItem(f"{data['akurasi']:.2f}"))
-            self.tableWidget.setItem(row, 3, QTableWidgetItem(f"{data['presisi']:.2f}"))
-            self.tableWidget.setItem(row, 4, QTableWidgetItem(f"{data['recall']:.2f}"))
-            self.tableWidget.setItem(row, 5, QTableWidgetItem(f"{data['f1_score']:.2f}"))
+        self.resultsTable = QTableWidget()
+        tab2Layout = QVBoxLayout()
+        self.resultsTable.setRowCount(len(test_data))
+        self.resultsTable.setColumnCount(8)
+        self.resultsTable.setHorizontalHeaderLabels(["Judul", "Kategori", "Akurasi", "Presisi", "Recall", "F1-Score", "ACC", "Edit ACC"])
+        tab2Layout.addWidget(self.resultsTable)
+        
+        for row, data in test_data.iterrows():
+            self.resultsTable.setItem(row, 0, QTableWidgetItem(data["Judul"]))
+            self.resultsTable.setItem(row, 1, QTableWidgetItem(data["name"]))
+            self.resultsTable.setItem(row, 2, QTableWidgetItem(f"{data['akurasi']:.2f}"))
+            self.resultsTable.setItem(row, 3, QTableWidgetItem(f"{data['presisi']:.2f}"))
+            self.resultsTable.setItem(row, 4, QTableWidgetItem(f"{data['recall']:.2f}"))
+            self.resultsTable.setItem(row, 5, QTableWidgetItem(f"{data['f1_score']:.2f}"))
 
             acc_combo = QComboBox()
             acc_combo.addItems(["ACC", "Tidak ACC"])
-            self.tableWidget.setCellWidget(row, 6, acc_combo)
+            self.resultsTable.setCellWidget(row, 6, acc_combo)
 
             edit_button = QPushButton("Edit ACC")
             edit_button.clicked.connect(self.editACC)
-            self.tableWidget.setCellWidget(row, 7, edit_button)
-
+            self.resultsTable.setCellWidget(row, 7, edit_button)
+            
         # Create search and filter layout
         search_layout = QHBoxLayout()
         search_label = QLabel("Search:")
@@ -55,7 +61,7 @@ class ClassificationResultWindow(QWidget):
         # Create layout
         layout = QVBoxLayout()
         layout.addLayout(search_layout)
-        layout.addWidget(self.tableWidget)
+        layout.addWidget(self.resultsTable)
 
         # Set layout
         self.setLayout(layout)

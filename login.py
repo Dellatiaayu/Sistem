@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt
 import mysql.connector
 from mysql.connector import Error
 from naive_bayes import NaiveBayesWindow
+from dashboard import ClassificationResultWindow
 
 class LoginWindow(QWidget):
     def __init__(self):
@@ -50,7 +51,7 @@ class LoginWindow(QWidget):
                 host='localhost',
                 database='klasifikasi_nb',
                 user='root', 
-                password='root' 
+                password='' 
             )
             if connection.is_connected():
                 cursor = connection.cursor()
@@ -63,6 +64,7 @@ class LoginWindow(QWidget):
                         self.openNaiveBayesWindow()
                     elif role == 2:
                         QMessageBox.information(self, "Login Successful", f"Welcome, kepala bidang {username}!")
+                        self.openDashboardWindow()
                     else:
                         QMessageBox.information(self, "Login Successful", f"Welcome, {username}!")
                 else:
@@ -77,6 +79,11 @@ class LoginWindow(QWidget):
     def openNaiveBayesWindow(self):
         self.naiveBayesWindow = NaiveBayesWindow()
         self.naiveBayesWindow.show()
+        self.close()
+        
+    def openDashboardWindow(self):
+        self.dashboardWindow = ClassificationResultWindow()
+        self.dashboardWindow.show()
         self.close()
 
 if __name__ == "__main__":

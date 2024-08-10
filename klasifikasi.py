@@ -16,10 +16,6 @@ class ClassificationResults(QWidget):
         self.resultsTitleLabel = QLabel("Judul Berita:")
         self.resultsTitle = QLabel("-")
         
-        self.preprocessedTextLabel = QLabel("Hasil Text Preprocessing:")
-        self.preprocessedText = QTextEdit()
-        self.preprocessedText.setReadOnly(True)
-        
         self.classificationResultLabel = QLabel("Hasil Klasifikasi:")
         self.classificationResult = QLabel("-")
         
@@ -37,8 +33,6 @@ class ClassificationResults(QWidget):
 
         resultsLayout.addWidget(self.resultsTitleLabel, 0, 0)
         resultsLayout.addWidget(self.resultsTitle, 0, 1)
-        resultsLayout.addWidget(self.preprocessedTextLabel, 1, 0)
-        resultsLayout.addWidget(self.preprocessedText, 1, 1)
         resultsLayout.addWidget(self.classificationResultLabel, 2, 0)
         resultsLayout.addWidget(self.classificationResult, 2, 1)
         resultsLayout.addWidget(self.accuracyLabel, 3, 0)
@@ -75,7 +69,6 @@ class ClassificationResults(QWidget):
         f1_score = "92.5%"
 
         self.resultsTitle.setText(test_title)
-        self.preprocessedText.setPlainText(preprocessed_text)
         self.classificationResult.setText(classification_result)
         self.accuracy.setText(accuracy)
         self.precision.setText(precision)
